@@ -52,6 +52,7 @@ class GrupaDeleteUser(generics.UpdateAPIView):
     serializer_class = GroupSerializer
 
     def put(self, request, *args, **kwargs):
+
         try:
             grupa = Grupa.objects.get(id=kwargs['id_grupy'])
             user = User.objects.get(id=kwargs['id_uzytkownika'])
