@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'HistoriaTransakcji',
     'CeleOszczednosciowe',
     'User',
+    'Skrzynka',
 
 ]
 
