@@ -7,6 +7,7 @@ from Grupa.serializer import GroupSerializer
 from Portfel.models import Portfel
 from django.contrib.auth.models import User
 
+
 class GrupaList(generics.ListCreateAPIView):
     queryset = Grupa.objects.all()
     serializer_class = GroupSerializer
