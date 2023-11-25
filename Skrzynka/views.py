@@ -20,6 +20,7 @@ class SkrzynkaByID(generics.ListCreateAPIView):
         odbiorcaID = kwargs['odbiorcaID']
         skrzynka = Skrzynka.objects.filter(IDOdbiorcy=odbiorcaID)
         serializer = SkrzynkaSerializer(skrzynka, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
