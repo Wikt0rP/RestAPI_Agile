@@ -9,3 +9,4 @@ class SkrzynkaSerializer(serializers.ModelSerializer):
         model = Skrzynka
         fields = '__all__'
 
+
