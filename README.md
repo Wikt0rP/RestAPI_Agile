@@ -1,11 +1,11 @@
 # RestAPI_CashFlow
-#Requests:
+Requests:
 
 //
 
 //
 
-#SAVINGS
+SAVINGS
  
 //
 
@@ -24,7 +24,7 @@ savings/update/id=<int:pk>/remove=<int:value>/                    ____________ r
 
 //
 
-#GROUPS
+GROUPS
 
 //
 
@@ -40,7 +40,7 @@ group=<id_grupy>/deleteuser=<id_uzytkownika>											____________ remove user 
 
 //
 
-#HISTORY
+HISTORY
 
 //
 
@@ -54,7 +54,7 @@ history/walletID=<int:pk>																					____________ get all wallet's tran
 
 //
 
-#MAILS
+MAILS
 
 //
 
@@ -69,7 +69,7 @@ skrzynka/read/<pk>																								____________ mark mail as read
 
 //
 
-#USER AND AUTHENTICATION
+USER AND AUTHENTICATION
 
 //
 
@@ -95,7 +95,7 @@ users/																														____________ create user
 
 //
 
-#FROM https://djoser.readthedocs.io/en/latest/getting_started.html#available-endpoints:
+FROM https://djoser.readthedocs.io/en/latest/getting_started.html#available-endpoints:
 
 //
 
