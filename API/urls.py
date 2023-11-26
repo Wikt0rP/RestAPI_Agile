@@ -24,6 +24,8 @@ urlpatterns = [
     path('', include('Grupa.urls'), ),
     path('', include('HistoriaTransakcji.urls'), ),
     path('', include('CeleOszczednosciowe.urls'), ),
+    path('', include('Skrzynka.urls'), ),
+    path('', include('User.urls'), ),
     #############################
     path('', include('djoser.urls')),
     path('', include('djoser.urls.jwt')),
