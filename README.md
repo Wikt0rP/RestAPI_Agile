@@ -66,6 +66,18 @@ skrzynka/read/<pk>																								____________ mark mail as read
 
 //
 
+//
+
+WALLET
+
+//
+
+wallet/create/   ____________ create wallet for userID
+
+wallets/ ____________ list all wallets
+
+//
+
 
 //
 
@@ -82,8 +94,6 @@ jwt/verify																												____________ verify token
 users/																														____________ create user
 /users/
 
-
-//
 
 //
 
