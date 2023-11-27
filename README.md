@@ -76,6 +76,8 @@ wallet/create/   ____________ create wallet for userID
 
 wallets/ ____________ list all wallets
 
+sendtransfer/  ____________ send transfer 
+
 //
 
 
