@@ -1,3 +1,4 @@
+from contextvars import Token
 from datetime import datetime
 from decimal import Decimal
 
@@ -6,6 +7,7 @@ from django.db import transaction
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken
 from unicodedata import decimal
 from HistoriaTransakcji.models import HistoriaTransakcji
 from rest_framework.authentication import TokenAuthentication
@@ -19,19 +21,20 @@ class CreateWallet(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user_id = request.headers['Userid']
-            user = User.objects.get(id=user_id)
+            tokenStr = request.headers['Authorization']
+            user = GetUserByToken(tokenStr)
+
             print(request.headers)
             portfel = None
             try:
-                portfel = models.Portfel.objects.get(idKlientaUser=user)
+                portfel = models.Portfel.objects.get(idKlientaUser=user.id)
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             except:
                 if portfel is not None:
-                    print(f"Portfel dla {user_id} juz istnieje")
+                    print(f"Portfel dla {user.id} juz istnieje")
                     return Response(status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    portfel = models.Portfel(idKlientaUser=User.objects.get(id=user_id), idKlientaGrupa=None, kwota=0)
+                    portfel = models.Portfel(idKlientaUser=User.objects.get(id=user.id), idKlientaGrupa=None, kwota=0)
                     portfel.save()
                     return Response(status=status.HTTP_201_CREATED)
 
@@ -55,7 +58,10 @@ class SendTransfer(generics.CreateAPIView):
 
     def put(self, request, *args, **kwargs):
         try:
-            portfel = models.Portfel.objects.get(idKlientaUser=request.headers['Userid'])
+            tokenStr = request.headers['Authorization']
+            user = GetUserByToken(tokenStr)
+
+            portfel = models.Portfel.objects.get(idKlientaUser=user.id)
             docelowyPortfel = models.Portfel.objects.get(id=request.headers['Targetwallet'])
             pieniadze = Decimal(request.headers['Money'])
 
@@ -72,3 +78,11 @@ class SendTransfer(generics.CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except KeyError as e:
             return Response({f"message: Nie znaleziono klucza {str(e)} w żądaniu."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def GetUserByToken(token):
+    token = token[7:].encode()
+    access_token = AccessToken(token)
+    user = User.objects.get(id=access_token['user_id'])
+    return user
+
