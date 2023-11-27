@@ -6,6 +6,7 @@ from Portfel import views
 urlpatterns = [
     path('wallet/create/', views.CreateWallet.as_view()),
     path('wallets/', views.WalletList.as_view()),
+    path('sendtransfer/', views.SendTransfer.as_view()),
 
 
 ]
