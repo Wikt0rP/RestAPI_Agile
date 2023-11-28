@@ -39,7 +39,7 @@ class GetStandingOrders(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         tokenSTR = request.headers.get('Authorization')
         user = GetUserByToken(tokenSTR)
-        serializer = StaleZlecenieSerializer.StaleZleceniaSerializer(stale_zlecenie_models.StaleZlecenie.objects.filter(idPortfeluZleceniodawcy=user.id), many=True)
+        serializer = StaleZlecenieSerializer.StaleZleceniaSerializer(stale_zlecenie_models.StaleZlecenie.objects.filter(ID_PortfelaZleceniodawcy=user.id), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -58,6 +58,38 @@ class StandingOrderInternal(generics.ListAPIView):
         zlecenie = stale_zlecenie_models.StaleZlecenie(Kwota=kwota, Tytul=tytul, ID_PortfelaZleceniodawcy=portfel, ID_PortfelaOdbiorcy=portfel, dzienMiesiaca=dzienWykonania)
         zlecenie.save()
         return Response(status=status.HTTP_201_CREATED)
+
+
+class UpdateStandingOrder(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def patch(self, request, *args, **kwargs):
+        token = request.headers.get('Authorization')
+        user = GetUserByToken(token)
+        idZlecenia = request.headers.get('id')
+        if stale_zlecenie_models.StaleZlecenie.objects.filter(id=idZlecenia, ID_PortfelaZleceniodawcy=user.id).exists():
+            kwota = request.headers.get('money')
+            tytul = request.headers.get('title')
+            dzienWykonania = request.headers.get('day')
+            zlecenie = stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia)
+            zlecenie.Kwota = kwota
+            zlecenie.Tytul = tytul
+            zlecenie.dzienMiesiaca = dzienWykonania
+            zlecenie.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def delete (self, request, *args, **kwargs):
+        tokenSTR = request.headers.get('Authorization')
+        user = GetUserByToken(tokenSTR)
+        idZlecenia = request.headers.get('id')
+        if stale_zlecenie_models.StaleZlecenie.objects.filter(id=idZlecenia, ID_PortfelaZleceniodawcy=user.id).exists():
+            stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia).delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 def GetUserByToken(token):
     token = token[7:].encode()
