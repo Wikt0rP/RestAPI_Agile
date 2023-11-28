@@ -60,11 +60,11 @@ MAILS
 
 //
 
-skrzynka/																													____________ get all mails
+mail/																													____________ get all mails
 
-skrzynka/userid=<odbiorcaID>																			____________ get mails by userID
+mail/userid=<odbiorcaID>																			____________ get mails by userID
 
-skrzynka/read/<pk>																								____________ mark mail as read
+mail/read/<pk>																								____________ mark mail as read
 
 //
 
