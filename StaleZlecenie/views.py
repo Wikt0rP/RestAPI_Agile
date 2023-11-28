@@ -59,7 +59,7 @@ class StandingOrderInternal(generics.ListAPIView):
 class UpdateStandingOrder(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
-    #TO DO: TESTS!!!
+    #TO DO: TESTS!
     def patch(self, request, *args, **kwargs):
         token = request.headers.get('Authorization')
         user = GetUserByToken(token)
