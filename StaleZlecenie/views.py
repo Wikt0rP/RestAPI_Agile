@@ -18,7 +18,6 @@ from StaleZlecenie.serializer import StaleZleceniaSerializer
 class CreateStandingOrder(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
-
     def post(self, request, *args, **kwargs):
         kwota = request.headers.get('money')
         tytul = request.headers.get('title')
