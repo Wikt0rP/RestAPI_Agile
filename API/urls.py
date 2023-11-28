@@ -26,8 +26,11 @@ urlpatterns = [
     path('', include('CeleOszczednosciowe.urls'), ),
     path('', include('Skrzynka.urls'), ),
     path('', include('User.urls'), ),
+    path('', include('Portfel.urls'), ),
+    path('', include('StaleZlecenie.urls'), ),
     #############################
     path('', include('djoser.urls')),
     path('', include('djoser.urls.jwt')),
     path('', include('Grupa.urls'), ),
+
 ]

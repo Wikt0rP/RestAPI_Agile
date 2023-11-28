@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'CeleOszczednosciowe',
     'User',
     'Skrzynka',
+    'StaleZlecenie',
 
 ]
 

@@ -8,9 +8,10 @@ from django.contrib.auth.models import User
 
 from Grupa.models import Grupa
 
+permission_classes = (IsAuthenticated,)
+
 
 class GetUserByToken(generics.GenericAPIView):
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         token = request.META.get('HTTP_AUTHORIZATION', " ").split(' ')[1]
@@ -24,3 +25,4 @@ class GetUserByToken(generics.GenericAPIView):
         group_names = [group.nazwa for group in groups]
         return Response({"user_id": user.id, "username": user.username, "email": user.email, "groups": group_names},
                         status=status.HTTP_200_OK)
+

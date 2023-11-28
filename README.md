@@ -28,6 +28,8 @@ GROUPS
 
 //
 
+group/create/ _________ create group headers: auth & name
+
 group/																														____________ all groups
 
 group/user=<int:pk>/																							____________ user's groups
@@ -58,11 +60,25 @@ MAILS
 
 //
 
-skrzynka/																													____________ get all mails
+mail/																													____________ get all mails
 
-skrzynka/userid=<odbiorcaID>																			____________ get mails by userID
+mail/userid=<odbiorcaID>																			____________ get mails by userID
 
-skrzynka/read/<pk>																								____________ mark mail as read
+mail/read/<pk>																								____________ mark mail as read
+
+//
+
+//
+
+WALLET
+
+//
+
+wallet/create/   ____________ create wallet for userID
+
+wallets/ ____________ list all wallets
+
+sendtransfer/  ____________ send transfer  headers: "Authorization", "TargetWallet", "Money"
 
 //
 
@@ -79,12 +95,23 @@ jwt/create																												____________ create JWT Token
 
 jwt/verify																												____________ verify token
 
-users/																														____________ create user
+users/																													____________ create user
 /users/
-
 
 //
 
+STANDING ORDERS
+
+//
+standingOrder/create ____________ Create standing order ______ headers: "Authorization", "money", "title", "day"  (day of the transfer execution), "TargetWalletID"
+
+standingOrder/user ____________ Get user's standing orders ______ headers: "Authorization"
+
+standingOrder/internal ____________ Create standing order for your own wallet -  that's income headers: "Authorization", "money", "title", "day" (day of the transfer execution)
+
+standingOrder/update ____________ Update standing order data  FOR PATCH: headers (* - obligatory ): "Authorization"*, "orderID"*, "money", "title", "day" FOR DELETE: "Authorization"*, "orderID"*
+
+//
 //
 
 //
