@@ -23,15 +23,12 @@ class CreateWallet(generics.CreateAPIView):
         try:
             tokenStr = request.headers['Authorization']
             user = GetUserByToken(tokenStr)
-
-            print(request.headers)
             portfel = None
             try:
                 portfel = models.Portfel.objects.get(idKlientaUser=user.id)
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             except:
                 if portfel is not None:
-                    print(f"Portfel dla {user.id} juz istnieje")
                     return Response(status=status.HTTP_400_BAD_REQUEST)
                 else:
                     portfel = models.Portfel(idKlientaUser=User.objects.get(id=user.id), idKlientaGrupa=None, kwota=0)
@@ -60,12 +57,10 @@ class SendTransfer(generics.CreateAPIView):
         try:
             tokenStr = request.headers['Authorization']
             user = GetUserByToken(tokenStr)
-
             portfel = models.Portfel.objects.get(idKlientaUser=user.id)
             docelowyPortfel = models.Portfel.objects.get(id=request.headers['Targetwallet'])
             pieniadze = Decimal(request.headers['Money'])
 
-            print(f"Przelew z {portfel.id} do {docelowyPortfel.id} w kwocie {pieniadze}")
             with transaction.atomic():
                 docelowyPortfel.kwota += pieniadze
                 portfel.kwota -= pieniadze
@@ -74,6 +69,7 @@ class SendTransfer(generics.CreateAPIView):
                 historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel, Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela", DataTransakcji=datetime.now())
                 historia.save()
                 return Response(status=status.HTTP_200_OK)
+
         except models.Portfel.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except KeyError as e:

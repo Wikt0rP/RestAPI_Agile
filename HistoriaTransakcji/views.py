@@ -12,7 +12,6 @@ class HistoriaTransakcjiList(generics.ListCreateAPIView):
     serializer_class = HistoriaTransakcjiSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         historia = self.get_serializer(data=request.data)
         historia.is_valid(raise_exception=True)
         historia.save()
