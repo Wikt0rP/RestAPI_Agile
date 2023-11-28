@@ -10,11 +10,6 @@ import StaleZlecenie.serializer as StaleZlecenieSerializer
 from StaleZlecenie.serializer import StaleZleceniaSerializer
 
 
-# TO DO: sprawdzic czy dziala
-# TO DO: sprawdzic czy dziala
-# TO DO: sprawdzic czy dziala
-# TO DO: sprawdzic czy dziala
-
 class CreateStandingOrder(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
@@ -64,14 +59,25 @@ class StandingOrderInternal(generics.ListAPIView):
 class UpdateStandingOrder(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
 
+    #TO DO: TESTS!!!
     def patch(self, request, *args, **kwargs):
         token = request.headers.get('Authorization')
         user = GetUserByToken(token)
         idZlecenia = request.headers.get('orderID')
         if stale_zlecenie_models.StaleZlecenie.objects.filter(id=idZlecenia, ID_PortfelaZleceniodawcy=user.id).exists():
-            kwota = request.headers.get('money')
-            tytul = request.headers.get('title')
-            dzienWykonania = request.headers.get('day')
+            if request.headers.get('money') is None:
+                kwota = stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia).Kwota
+            else:
+                kwota = request.headers.get('money')
+            if request.headers.get('title') is None:
+                tytul = stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia).Tytul
+            else:
+                tytul = request.headers.get('title')
+            if request.headers.get('day') is None:
+                dzienWykonania = stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia).dzienMiesiaca
+            else:
+                dzienWykonania = request.headers.get('day')
+
             zlecenie = stale_zlecenie_models.StaleZlecenie.objects.get(id=idZlecenia)
             zlecenie.Kwota = kwota
             zlecenie.Tytul = tytul
