@@ -8,9 +8,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
-from unicodedata import decimal
 from HistoriaTransakcji.models import HistoriaTransakcji
-from rest_framework.authentication import TokenAuthentication
 import Portfel.models as models
 import Portfel.serializer as PorfteSerializer
 from django.contrib.auth.models import User
