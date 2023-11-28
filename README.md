@@ -95,7 +95,7 @@ jwt/create																												____________ create JWT Token
 
 jwt/verify																												____________ verify token
 
-users/																														____________ create user
+users/																													____________ create user
 /users/
 
 
