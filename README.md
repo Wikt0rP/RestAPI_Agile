@@ -28,6 +28,8 @@ GROUPS
 
 //
 
+group/create/ _________ create group headers: auth & name
+
 group/																														____________ all groups
 
 group/user=<int:pk>/																							____________ user's groups
