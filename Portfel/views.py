@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 from HistoriaTransakcji.models import HistoriaTransakcji
 import Portfel.models as models
-import Portfel.serializer as PorfteSerializer
+import Portfel.serializer as PorftelSerializer
 from django.contrib.auth.models import User
 
 
@@ -39,17 +39,17 @@ class CreateWallet(generics.CreateAPIView):
 
 class WalletList(generics.ListAPIView):
     queryset = models.Portfel.objects.all()
-    serializer_class = PorfteSerializer.PortfelSerializer
+    serializer_class = PorftelSerializer.PortfelSerializer
 
     def get(self, request, *args, **kwargs):
         portfel = models.Portfel.objects.all()
-        serializer = PorfteSerializer.PortfelSerializer(portfel, many=True)
+        serializer = PorftelSerializer.PortfelSerializer(portfel, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SendTransfer(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = PorfteSerializer.PortfelSerializer
+    serializer_class = PorftelSerializer.PortfelSerializer
 
     def put(self, request, *args, **kwargs):
         try:
