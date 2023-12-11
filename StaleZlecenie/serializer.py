@@ -2,7 +2,7 @@ from rest_framework import serializers
 from StaleZlecenie.models import StaleZlecenie
 
 
-class StaleZleceniaSerializer(serializers.ModelSerializer):
+class StaleZlecenieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StaleZlecenie
