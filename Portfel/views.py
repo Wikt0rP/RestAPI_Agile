@@ -11,7 +11,8 @@ from HistoriaTransakcji.models import HistoriaTransakcji
 import Portfel.models as models
 from .serializer import PortfelSerializer
 from django.contrib.auth.models import User
-from models import Portfel
+from .models import Portfel
+
 
 class CreateWallet(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
