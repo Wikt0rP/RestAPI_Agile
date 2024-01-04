@@ -1,4 +1,3 @@
-from contextvars import Token
 from datetime import datetime
 from decimal import Decimal
 
@@ -10,8 +9,9 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 from HistoriaTransakcji.models import HistoriaTransakcji
 import Portfel.models as models
-import Portfel.serializer as PorftelSerializer
+from .serializer import PortfelSerializer
 from django.contrib.auth.models import User
+from .models import Portfel
 
 
 class CreateWallet(generics.CreateAPIView):
@@ -23,13 +23,13 @@ class CreateWallet(generics.CreateAPIView):
             user = GetUserByToken(tokenStr)
             portfel = None
             try:
-                portfel = models.Portfel.objects.get(idKlientaUser=user.id)
+                portfel = Portfel.objects.get(idKlientaUser=user.id)
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             except:
                 if portfel is not None:
                     return Response(status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    portfel = models.Portfel(idKlientaUser=User.objects.get(id=user.id), idKlientaGrupa=None, kwota=0)
+                    portfel = Portfel(idKlientaUser=User.objects.get(id=user.id), idKlientaGrupa=None, kwota=0)
                     portfel.save()
                     return Response(status=status.HTTP_201_CREATED)
 
@@ -38,25 +38,25 @@ class CreateWallet(generics.CreateAPIView):
 
 
 class WalletList(generics.ListAPIView):
-    queryset = models.Portfel.objects.all()
-    serializer_class = PorftelSerializer.PortfelSerializer
+    queryset = Portfel
+    serializer_class = PortfelSerializer
 
     def get(self, request, *args, **kwargs):
-        portfel = models.Portfel.objects.all()
-        serializer = PorftelSerializer.PortfelSerializer(portfel, many=True)
+        portfel = Portfel.objects.all()
+        serializer = PortfelSerializer(portfel, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SendTransfer(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = PorftelSerializer.PortfelSerializer
+    serializer_class = PortfelSerializer
 
-    def put(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         try:
             tokenStr = request.headers['Authorization']
             user = GetUserByToken(tokenStr)
-            portfel = models.Portfel.objects.get(idKlientaUser=user.id)
-            docelowyPortfel = models.Portfel.objects.get(id=request.headers['Targetwallet'])
+            portfel = Portfel.objects.get(idKlientaUser=user.id)
+            docelowyPortfel = Portfel.objects.get(id=request.headers['Targetwallet'])
             pieniadze = Decimal(request.headers['Money'])
 
             with transaction.atomic():
@@ -67,11 +67,8 @@ class SendTransfer(generics.CreateAPIView):
                 historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel, Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela", DataTransakcji=datetime.now())
                 historia.save()
                 return Response(status=status.HTTP_200_OK)
-
-        except models.Portfel.DoesNotExist:
+        except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        except KeyError as e:
-            return Response({f"message: Nie znaleziono klucza {str(e)} w żądaniu."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def GetUserByToken(token):

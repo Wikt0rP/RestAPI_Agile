@@ -33,12 +33,12 @@ class GrupaList(generics.ListCreateAPIView):
     serializer_class = GroupSerializer
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         grupa = self.get_serializer(data=request.data)
         grupa.is_valid(raise_exception=True)
         grupa.save()
         portfel = Portfel(idKlientaGrupa=grupa.instance, idKlientaUser=None)
         portfel.save()
+
         return Response(request.data, status=status.HTTP_201_CREATED)
 
 
