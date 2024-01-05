@@ -71,6 +71,20 @@ class SendTransfer(generics.CreateAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetWalletByUser(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PortfelSerializer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            portfel = Portfel.objects.get(idKlientaUser=user.id)
+            serializer = PortfelSerializer(portfel, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 def GetUserByToken(token):
     token = token[7:].encode()
     access_token = AccessToken(token)

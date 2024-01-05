@@ -74,6 +74,8 @@ WALLET
 
 //
 
+wallet/user/ ____________ get wallet by user
+
 wallet/create/   ____________ create wallet for userID
 
 wallets/ ____________ list all wallets
