@@ -114,13 +114,22 @@ standingOrder/internal ____________ Create standing order for your own wallet - 
 standingOrder/update ____________ Update standing order data  FOR PATCH: headers (* - obligatory ): "Authorization"*, "orderID"*, "money", "title", "day" FOR DELETE: "Authorization"*, "orderID"*
 
 //
+
+EXPENSES
+
 //
+
+expense/create  ____________ Create Expense
+
+expense/list/   ____________ List Expenses
+
+expense/delete/ ____________ Delete Expense
 
 //
 
 //
 
-//
+
 
 //
 
