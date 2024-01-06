@@ -94,7 +94,7 @@ class AddWallet(generics.CreateAPIView):
 
         user = request.user
         portfel = Portfel.objects.get(idKlientaUser=user.id)
-        dodaj = Decimal(request.headers['Money'])
+        dodaj = Decimal(request.headers['kwota'])
         portfel.kwota += dodaj
         portfel.save()
         return Response(status=status.HTTP_200_OK)
