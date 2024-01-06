@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-
 import requests
 from django.db import transaction
 from rest_framework import generics, status
@@ -64,7 +63,9 @@ class SendTransfer(generics.CreateAPIView):
                 portfel.kwota -= pieniadze
                 docelowyPortfel.save()
                 portfel.save()
-                historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel, Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela", DataTransakcji=datetime.now())
+                historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel,
+                                              Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela",
+                                              DataTransakcji=datetime.now())
                 historia.save()
                 return Response(status=status.HTTP_200_OK)
         except KeyError:
@@ -90,4 +91,3 @@ def GetUserByToken(token):
     access_token = AccessToken(token)
     user = User.objects.get(id=access_token['user_id'])
     return user
-
