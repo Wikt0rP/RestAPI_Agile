@@ -7,4 +7,5 @@ urlpatterns = \
         path('expense/create/', views.CreateExpense.as_view()),
         path('expense/list/', views.ExpenseList.as_view()),
         path('expense/delete/', views.DeleteExpense.as_view()),
+        path('expense/user/', views.ExpenseByUser.as_view()),
     ]
