@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-
 import requests
 from django.db import transaction
 from rest_framework import generics, status
@@ -64,9 +63,25 @@ class SendTransfer(generics.CreateAPIView):
                 portfel.kwota -= pieniadze
                 docelowyPortfel.save()
                 portfel.save()
-                historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel, Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela", DataTransakcji=datetime.now())
+                historia = HistoriaTransakcji(ID_portfelaNadawcy=portfel, ID_PortfelaOdbiorcy=docelowyPortfel,
+                                              Kwota=pieniadze, Typ="Przelew", Tytul="Przelew z portfela",
+                                              DataTransakcji=datetime.now())
                 historia.save()
                 return Response(status=status.HTTP_200_OK)
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetWalletByUser(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PortfelSerializer
+
+    def get(self, request, *args, **kwargs):
+        try:
+            user = request.user
+            portfel = Portfel.objects.get(idKlientaUser=user.id)
+            serializer = PortfelSerializer(portfel, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except KeyError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,4 +91,3 @@ def GetUserByToken(token):
     access_token = AccessToken(token)
     user = User.objects.get(id=access_token['user_id'])
     return user
-
