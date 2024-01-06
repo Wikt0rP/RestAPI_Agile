@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 
 from .models import Wydatki
 from .serializer import WydatkiSerializer
+from rest_framework import status
+from rest_framework.response import Response
 
 
-class CreateWallet(generics.CreateAPIView):
+class CreateExpense(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = WydatkiSerializer
 
@@ -22,7 +24,7 @@ class CreateWallet(generics.CreateAPIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
-class WalletList(generics.ListAPIView):
+class ExpenseList(generics.ListAPIView):
     queryset = Wydatki
     serializer_class = WydatkiSerializer
 
@@ -32,7 +34,7 @@ class WalletList(generics.ListAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class DeleteWallet(generics.DestroyAPIView):
+class DeleteExpense(generics.DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = WydatkiSerializer
 
