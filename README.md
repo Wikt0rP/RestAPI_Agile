@@ -125,6 +125,9 @@ expense/list/   ____________ List Expenses
 
 expense/delete/ ____________ Delete Expense
 
+expense/user/ ____________ Expense by user
+
+
 //
 
 //
