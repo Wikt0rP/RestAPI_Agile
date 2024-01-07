@@ -40,7 +40,7 @@ class DeleteExpense(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        idWydatku = request.headers.get('id')
+        idWydatku = int(request.headers.get('id'))
         wydatki = Wydatki.objects.get(id=idWydatku, idKlientaUser=User.objects.get(id=user.id))
         wydatki.delete()
         return Response(status=status.HTTP_200_OK)
