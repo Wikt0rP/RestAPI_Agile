@@ -40,7 +40,18 @@ class DeleteExpense(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        idWydatku = request.data['id']
+        idWydatku = int(request.headers.get('id'))
         wydatki = Wydatki.objects.get(id=idWydatku, idKlientaUser=User.objects.get(id=user.id))
         wydatki.delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class ExpenseByUser(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = WydatkiSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        wydatki = Wydatki.objects.filter(idKlientaUser=User.objects.get(id=user.id))
+        serializer = WydatkiSerializer(wydatki, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

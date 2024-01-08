@@ -86,6 +86,20 @@ class GetWalletByUser(generics.ListAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class AddWallet(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PortfelSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        user = request.user
+        portfel = Portfel.objects.get(idKlientaUser=user.id)
+        dodaj = Decimal(request.data['kwota'])
+        portfel.kwota += dodaj
+        portfel.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 def GetUserByToken(token):
     token = token[7:].encode()
     access_token = AccessToken(token)

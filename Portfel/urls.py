@@ -8,6 +8,7 @@ urlpatterns = [
     path('wallets/', views.WalletList.as_view()),
     path('sendtransfer/', views.SendTransfer.as_view()),
     path('wallet/user/', views.GetWalletByUser.as_view()),
+    path('wallet/add/', views.AddWallet.as_view()),
 
 
 
